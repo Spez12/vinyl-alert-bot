@@ -11,5 +11,5 @@ async def artists(message: Message):
         "🎵 Artisti disponibili:\n\n"
         "• Ariana Grande\n"
         "• Sabrina Carpenter\n"
-        "• Taylor Swift"
+        "• Taylor Swift\n"
     )
