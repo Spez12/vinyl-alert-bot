@@ -19,7 +19,7 @@ async def list_subscriptions(message: Message):
         )
         return
 
-    text = "Artisti seguiti:\n\n"
+    text = "🎧 Artisti seguiti:\n\n"
 
     for artist in artists:
         text += f"• {artist}\n"

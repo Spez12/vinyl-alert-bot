@@ -51,7 +51,7 @@ async def subscribe(message: Message):
         return
 
     await message.answer(
-        f"Ti sei iscritto a {artist}."
+        f"✅ Ti sei iscritto a {artist}."
     )
 
 
@@ -85,5 +85,5 @@ async def unsubscribe(message: Message):
     remove_subscription(user_id, artist)
 
     await message.answer(
-        f"Hai smesso di seguire {artist}."
+        f"❌ Hai smesso di seguire {artist}."
     )
