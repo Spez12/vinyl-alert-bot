@@ -26,6 +26,9 @@ dp.include_router(admin_router)
 
 async def main():
 
+    print("Primo controllo all'avvio...")
+    await check_releases()
+
     scheduler = AsyncIOScheduler()
 
     scheduler.add_job(
