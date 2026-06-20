@@ -2,6 +2,12 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 
+from services.database import (
+    add_subscription,
+    remove_subscription,
+    get_subscriptions
+)
+
 router = Router()
 
 ARTISTS = {
@@ -17,8 +23,6 @@ ARTISTS = {
     "taylor": "Taylor Swift",
     "tay": "Taylor Swift"
 }
-
-subscriptions = {}
 
 
 @router.message(Command("sub"))
@@ -40,16 +44,11 @@ async def subscribe(message: Message):
         )
         return
 
-    if user_id not in subscriptions:
-        subscriptions[user_id] = []
-
-    if artist in subscriptions[user_id]:
+    if not add_subscription(user_id, artist):
         await message.answer(
             f"Sei già iscritto a {artist}."
         )
         return
-
-    subscriptions[user_id].append(artist)
 
     await message.answer(
         f"Ti sei iscritto a {artist}."
@@ -75,16 +74,15 @@ async def unsubscribe(message: Message):
         )
         return
 
-    if (
-        user_id not in subscriptions
-        or artist not in subscriptions[user_id]
-    ):
+    subscriptions = get_subscriptions(user_id)
+
+    if artist not in subscriptions:
         await message.answer(
             f"Non segui {artist}."
         )
         return
 
-    subscriptions[user_id].remove(artist)
+    remove_subscription(user_id, artist)
 
     await message.answer(
         f"Hai smesso di seguire {artist}."

@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 
-from handlers.subscription import subscriptions
+from services.database import get_subscriptions
 
 router = Router()
 
@@ -11,10 +11,9 @@ router = Router()
 async def list_subscriptions(message: Message):
     user_id = message.from_user.id
 
-    if (
-        user_id not in subscriptions
-        or len(subscriptions[user_id]) == 0
-    ):
+    artists = get_subscriptions(user_id)
+
+    if not artists:
         await message.answer(
             "Non stai seguendo nessun artista."
         )
@@ -22,7 +21,7 @@ async def list_subscriptions(message: Message):
 
     text = "Artisti seguiti:\n\n"
 
-    for artist in subscriptions[user_id]:
+    for artist in artists:
         text += f"• {artist}\n"
 
     await message.answer(text)

@@ -2,3 +2,4 @@ aiogram==3.21.0
 python-dotenv==1.1.0
 requests==2.32.4
 apscheduler==3.11.0
+supabase==0.0.1
