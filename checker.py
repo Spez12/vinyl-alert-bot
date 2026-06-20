@@ -1,5 +1,3 @@
-import asyncio
-
 from services.discogs_service import get_releases
 from services.database import (
     get_tracked_artists,
@@ -12,35 +10,54 @@ from services.notifier import notify_users
 
 async def check_releases():
 
+    print("Avvio controllo release...")
+
     artists = get_tracked_artists()
 
     for artist in artists:
 
-        print(f"Controllo {artist}...")
+        try:
+            print(f"Controllo {artist}...")
 
-        releases = get_releases(artist)
+            releases = get_releases(artist)
 
-        for release in releases[:10]:
+            for release in releases[:10]:
 
-            release_id = release["id"]
+                release_id = release.get("id")
 
-            if release_exists(release_id):
-                continue
+                if release_id is None:
+                    continue
 
-            save_release(
-                artist,
-                release_id
-            )
+                if release_exists(release_id):
+                    continue
 
-            users = get_subscribers(artist)
+                title = release.get(
+                    "title",
+                    "Titolo sconosciuto"
+                )
 
-            await notify_users(
-                users,
-                artist,
-                release["title"]
-            )
+                save_release(
+                    artist,
+                    release_id
+                )
+
+                users = get_subscribers(artist)
+
+                await notify_users(
+                    users,
+                    artist,
+                    title
+                )
+
+                print(
+                    f"Nuova release trovata: {title}"
+                )
+
+        except Exception as e:
 
             print(
-                f"Nuova release trovata: "
-                f"{release['title']}"
+                f"Errore durante il controllo di "
+                f"{artist}: {e}"
             )
+
+    print("Controllo completato.")
