@@ -19,4 +19,10 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: python checker.py
+      - name: Run checker
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          DISCOGS_TOKEN: ${{ secrets.DISCOGS_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python checker.py
