@@ -116,3 +116,12 @@ def get_tracked_artists():
         row["artist"]
         for row in response.data
     ]
+
+def remove_tracked_artist(artist):
+
+    supabase.table(
+        "tracked_artists"
+    ).delete().eq(
+        "artist",
+        artist
+    ).execute()
