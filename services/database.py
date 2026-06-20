@@ -103,3 +103,16 @@ def get_subscribers(artist):
     )
 
     return [row["user_id"] for row in response.data]
+
+def get_tracked_artists():
+    response = (
+        supabase
+        .table("tracked_artists")
+        .select("artist")
+        .execute()
+    )
+
+    return [
+        row["artist"]
+        for row in response.data
+    ]

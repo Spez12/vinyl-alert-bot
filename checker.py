@@ -37,6 +37,9 @@ async def check_releases():
                     "Titolo sconosciuto"
                 )
 
+                link = f"https://www.discogs.com/release/{release_id}"
+                cover = release.get("cover_image")
+
                 save_release(
                     artist,
                     release_id
@@ -47,7 +50,9 @@ async def check_releases():
                 await notify_users(
                     users,
                     artist,
-                    title
+                    title,
+                    link,
+                    cover
                 )
 
                 print(
