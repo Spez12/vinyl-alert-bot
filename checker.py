@@ -7,6 +7,7 @@ from services.database import (
 )
 from services.notifier import notify_users
 
+import asyncio
 
 async def check_releases():
 
@@ -66,4 +67,3 @@ async def check_releases():
 
 if __name__ == "__main__":
     asyncio.run(check_releases())
-    
