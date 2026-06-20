@@ -1,0 +1,27 @@
+# Variabili d'ambiente
+.env
+
+# Database locali
+*.db
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ambiente virtuale
+venv/
+.venv/
+
+# File di VS Code
+.vscode/
+
+# File di sistema Windows
+Thumbs.db
+Desktop.ini
+
+# Log
+*.log
+
+# Cartella dati locale
+data/

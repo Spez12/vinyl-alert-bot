@@ -6,4 +6,6 @@ router = Router()
 
 @router.message(Command("start"))
 async def start(message: Message):
-    await message.answer("Benvenuto nel Vinyl Alert Bot.")
+    await message.answer(
+        "Benvenuto nel Vinyl Alert Bot!"
+    )
