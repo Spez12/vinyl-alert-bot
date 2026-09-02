@@ -3,27 +3,28 @@ from services.database import (
     get_tracked_artists,
     release_exists,
     save_release,
-    get_subscribers
+    get_subscribers,
 )
 from services.notifier import notify_users
 
+
 import asyncio
 
-async def check_releases():
 
+async def check_releases():
     print("Avvio controllo release...")
 
     artists = get_tracked_artists()
+    print(f"Artisti da controllare: {len(artists)}")
 
     for artist in artists:
-
         try:
             print(f"Controllo {artist}...")
 
             releases = get_releases(artist)
+            print(f"  Release trovate da Discogs: {len(releases)}")
 
             for release in releases[:10]:
-
                 release_id = release.get("id")
 
                 if release_id is None:
@@ -60,7 +61,6 @@ async def check_releases():
                 )
 
         except Exception as e:
-
             print(
                 f"Errore durante il controllo di "
                 f"{artist}: {e}"
@@ -68,7 +68,6 @@ async def check_releases():
 
     print("Controllo completato.")
 
-    import asyncio
 
 if __name__ == "__main__":
     asyncio.run(check_releases())

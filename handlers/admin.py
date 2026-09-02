@@ -10,12 +10,9 @@ router = Router()
 
 @router.message(Command("addartist"))
 async def add_artist(message: Message):
-
     artist = (
-        message.text
-        .replace("/addartist", "")
-        .strip()
-    )
+        message.text or ""
+    ).replace("/addartist", "", 1).strip()
 
     if not artist:
         await message.answer(
@@ -33,18 +30,31 @@ async def add_artist(message: Message):
         f"Sto inizializzando {artist}..."
     )
 
-    releases = get_releases(artist)
+    try:
+        releases = get_releases(artist)
 
-    count = 0
+        count = 0
+        for release in releases:
+            release_id = release.get("id")
+            if release_id is None:
+                continue
 
-    for release in releases:
-        save_release(
-            artist,
-            release["id"]
+            save_release(artist, release_id)
+            count += 1
+
+        await message.answer(
+            f"✅ {artist} aggiunto.\n"
+            f"{count} release iniziali salvate.\n\n"
+            f"Da ora verrà incluso nei controlli automatici.\n"
+            f"Per ricevere le notifiche usa: /sub {artist}"
         )
-        count += 1
 
-    await message.answer(
-        f"✅ {artist} aggiunto.\n"
-        f"{count} release salvate."
-    )
+    except Exception as e:
+        # L'artista resta nel database: al prossimo controllo
+        # automatico il checker proverà nuovamente a interrogarlo.
+        await message.answer(
+            f"⚠️ {artist} è stato aggiunto, ma non sono riuscito "
+            "a inizializzare le release in questo momento.\n"
+            "Riproverò nei controlli automatici."
+        )
+        print(f"Errore inizializzazione {artist}: {e}")

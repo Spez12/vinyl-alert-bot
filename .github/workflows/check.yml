@@ -2,13 +2,16 @@ name: Check Vinyls
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    # Ogni 6 ore, spostato dal minuto 00 per ridurre i ritardi
+    # nei momenti di maggiore carico di GitHub Actions.
+    - cron: "17 */6 * * *"
 
   workflow_dispatch:
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
